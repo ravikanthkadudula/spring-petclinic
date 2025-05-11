@@ -22,8 +22,21 @@ jobs:
       run: mvn clean install
     - name: SonarCloud Scan
       run: mvn verify sonar:sonar -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }} -Dsonar.organization=${{ secrets.SONAR_ORG }} -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }} -Dsonar.branch.name=master
+    - name: Upload build artifact
+      uses: actions/upload-artifact@v4
+        with:
+          name: java-artifact
+          path: target/ 
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
 
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: java-artifact
+          path: deploy/
 
-  
-
-
+      - name: Show contents
+        run: ls -R deploy/
