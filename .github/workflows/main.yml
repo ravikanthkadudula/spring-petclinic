@@ -39,4 +39,4 @@ jobs:
           path: deploy/
 
       - name: Show contents
-        run: ls -R deploy/
+        run: ls -ltr deploy/
